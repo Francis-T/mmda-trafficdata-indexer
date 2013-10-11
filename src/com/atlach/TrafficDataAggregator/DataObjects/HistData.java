@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <b>HistData Object</b>
- * </br>Object used to represent Historical Traffic Data for a set of Lines
+ * <b>HistData Object</b> </br>Object used to represent Historical Traffic Data
+ * for a set of Lines
+ * 
  * @author francis
- *
+ * 
  */
 public class HistData {
 	/* Fields */
@@ -21,6 +22,7 @@ public class HistData {
 		dataList = new ArrayList<LineInfo>();
 		date = d;
 	}
+
 	public HistData(String d, String t) {
 		dataList = new ArrayList<LineInfo>();
 		date = d;

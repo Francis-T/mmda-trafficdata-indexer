@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import com.atlach.TrafficDataIndexer.TrafficDataManager.MonitoredLocation;
 
 /**
- * <b>TrafficDataIndexerMain Class</b>
- * </br>Handles the running of Get Traffic Data tasks using an instance of the 
- * TrafficDataManager class 
+ * <b>TrafficDataIndexerMain Class</b> </br>Handles the running of Get Traffic
+ * Data tasks using an instance of the TrafficDataManager class
+ * 
  * @author francis
- *
+ * 
  */
 public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 	private static final long TIMER_DURATION = 1000;
@@ -29,14 +29,15 @@ public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 	public TrafficDataIndexerMain(TrafficDataIndexerNotifier ev) {
 		notifyEvent = ev;
 	}
-	
-	public TrafficDataIndexerMain(TrafficDataIndexerNotifier ev, boolean useWaitThreads) {
+
+	public TrafficDataIndexerMain(TrafficDataIndexerNotifier ev,
+			boolean useWaitThreads) {
 		notifyEvent = ev;
 		shouldUseWaitThreads = useWaitThreads;
 	}
 
 	/*****************************************************************************************/
-	/** PUBLIC METHODS																		**/
+	/** PUBLIC METHODS **/
 	/*****************************************************************************************/
 	/**
 	 * Starts the TrafficDataIndexer
@@ -109,11 +110,11 @@ public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 	}
 
 	/*****************************************************************************************/
-	/** PRIVATE METHODS																		**/
+	/** PRIVATE METHODS **/
 	/*****************************************************************************************/
 	/**
-	 * Runs the Get Traffic Data Task. This one starts the thread which calls for update of the
-	 * Traffic Data using the TrafficDataManager
+	 * Runs the Get Traffic Data Task. This one starts the thread which calls
+	 * for update of the Traffic Data using the TrafficDataManager
 	 */
 	private void runGetTrafficDataTask() {
 		if (getTrafficDataTask == null) {
@@ -142,14 +143,15 @@ public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 	}
 
 	/*****************************************************************************************/
-	/** INTERNAL CLASSES																	**/
+	/** INTERNAL CLASSES **/
 	/*****************************************************************************************/
 	/**
-	 * Runnable class for Get Traffic Data Tasks
-	 * </br>This task performs the actual update of the traffic data using an instance of the
+	 * Runnable class for Get Traffic Data Tasks </br>This task performs the
+	 * actual update of the traffic data using an instance of the
 	 * TrafficDataManager class
+	 * 
 	 * @author francis
-	 *
+	 * 
 	 */
 	class GetTrafficDataTask implements Runnable {
 		private TrafficDataIndexerEvent indexerEvent;
@@ -166,7 +168,8 @@ public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 
 			try {
 				@SuppressWarnings("unused")
-				ArrayList<MonitoredLocation> monitoredLocList = tdm.getAllLineTrafficData();
+				ArrayList<MonitoredLocation> monitoredLocList = tdm
+						.getAllLineTrafficData();
 			} catch (InterruptedException e1) {
 				System.out.println("[GetTrafficDataTask] Thread Interrupted.");
 				tdm.stopReadOperations();
@@ -181,15 +184,16 @@ public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 	}
 
 	/**
-	 * Runnable class for Indexer Timer Tasks
-	 * </br><b>Purpose:</b>
-	 * </br>The Indexer Timer task is continuously run whenever the Indexer is started. Depending
-	 * on the value of the shouldUseWaitThreads boolean flag, it will either run once (if false)
-	 * or it will run continuously (true). The purpose of this was to allow the module to be used
-	 * either via a crontab'd command line operation (i.e. the system handles the waiting) or via
+	 * Runnable class for Indexer Timer Tasks </br><b>Purpose:</b> </br>The
+	 * Indexer Timer task is continuously run whenever the Indexer is started.
+	 * Depending on the value of the shouldUseWaitThreads boolean flag, it will
+	 * either run once (if false) or it will run continuously (true). The
+	 * purpose of this was to allow the module to be used either via a crontab'd
+	 * command line operation (i.e. the system handles the waiting) or via
 	 * Graphical-User Interface (i.e. the program handles its own waiting)
+	 * 
 	 * @author francis
-	 *
+	 * 
 	 */
 	class IndexerTimerTask implements Runnable {
 		private TrafficDataIndexerEvent indexerEvent;
@@ -200,31 +204,36 @@ public class TrafficDataIndexerMain implements TrafficDataIndexerEvent {
 
 		@Override
 		public void run() {
-			
+
 			if (shouldUseWaitThreads) {
 				try {
 					System.out.println("[IndexerTimerTask] Thread Started");
 					runGetTrafficDataTask();
-							
+
 					long minutesSec = 0;
 					long secondsSec = 0;
-					
-					/* Basically, we wait for fifteen full minutes before we move on to the Get
-					 * Traffic Data Update. Every second, we update the GUI status using the 
-					 * NotifyEvent here */
+
+					/*
+					 * Basically, we wait for fifteen full minutes before we
+					 * move on to the Get Traffic Data Update. Every second, we
+					 * update the GUI status using the NotifyEvent here
+					 */
 					for (int i = 0; i < TIMER_COUNTDOWN; i++) {
 						minutesSec = (TIMER_COUNTDOWN - i) / COUNT_DOWN_TO_MINS;
-						secondsSec = ((TIMER_COUNTDOWN - i) % COUNT_DOWN_TO_MINS) * SECONDS_MAGNIFIER;
-					
+						secondsSec = ((TIMER_COUNTDOWN - i) % COUNT_DOWN_TO_MINS)
+								* SECONDS_MAGNIFIER;
+
 						if (!isRunning) {
-							notifyEvent.onStatusUpdate("Next update due in: " + minutesSec + 
-													   " mins and " + secondsSec + " secs. ");
+							notifyEvent.onStatusUpdate("Next update due in: "
+									+ minutesSec + " mins and " + secondsSec
+									+ " secs. ");
 						}
-					
+
 						Thread.sleep(TIMER_DURATION);
 					}
 				} catch (InterruptedException e) {
-					System.out.println("[IndexerTimerTask] Thread Interrupted.");
+					System.out
+							.println("[IndexerTimerTask] Thread Interrupted.");
 					indexerEvent.onTimerInterrupt();
 					return;
 				}

@@ -14,14 +14,15 @@ import javax.swing.JPanel;
 import com.atlach.TrafficDataAggregator.TrafficDataAggregatorMain;
 
 /**
- * <b>TrafficDataIndexerUI Class</b>
- * </br>Provides a Graphical User Interface for the TrafficDataIndexer and 
- * the TrafficDataAggregator. The old name was retained for historical purposes.
+ * <b>TrafficDataIndexerUI Class</b> </br>Provides a Graphical User Interface
+ * for the TrafficDataIndexer and the TrafficDataAggregator. The old name was
+ * retained for historical purposes.
+ * 
  * @author francis
- *
+ * 
  */
-public class TrafficDataIndexerUI extends JFrame implements ActionListener, 
-															TrafficDataIndexerNotifier {
+public class TrafficDataIndexerUI extends JFrame implements ActionListener,
+		TrafficDataIndexerNotifier {
 	private TrafficDataIndexerMain trafficIndexer = null;
 	private TrafficDataAggregatorMain trafficAggregator = null;
 	private JPanel mPanel = null;
@@ -32,19 +33,19 @@ public class TrafficDataIndexerUI extends JFrame implements ActionListener,
 	private JLabel mStatusLabel = null;
 	private String filename;
 	private String timestamp;
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -789431375631112798L;
-	
+
 	public TrafficDataIndexerUI() {
 		mPanel = new JPanel();
 		mLabel = new JLabel("Traffic Data Indexer v1.3");
 		mStatusLabel = new JLabel("---");
 		mStatusLabel.setPreferredSize(new Dimension(390, 30));
 		mStatusLabel.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		mStartButton = new JButton("Start");
 		mStartButton.addActionListener(this);
 		mStartButton.setPreferredSize(new Dimension(100, 20));
@@ -54,29 +55,29 @@ public class TrafficDataIndexerUI extends JFrame implements ActionListener,
 		mRegenButton = new JButton("Regen");
 		mRegenButton.addActionListener(this);
 		mRegenButton.setPreferredSize(new Dimension(100, 20));
-		
+
 		mPanel.add(mLabel);
 		mPanel.add(mStatusLabel);
 		mPanel.add(mStartButton);
 		mPanel.add(mRegenButton);
 		mPanel.add(mStopButton);
-		
+
 		// Window Listeners
 		addWindowListener(new WindowAdapter() {
-		  	public void windowClosing(WindowEvent e) {
-		  		if (trafficIndexer != null) {
-		  			trafficIndexer.stop();
-		  		}
-		  		
+			public void windowClosing(WindowEvent e) {
+				if (trafficIndexer != null) {
+					trafficIndexer.stop();
+				}
+
 				if (trafficAggregator != null) {
 					trafficAggregator.stopOperation();
 				}
-			   System.exit(0);
-		  	} //windowClosing
-		} );
+				System.exit(0);
+			} // windowClosing
+		});
 		this.add(mPanel);
 	}
-	
+
 	/**
 	 * Starts the Traffic Data Indexer
 	 */
@@ -104,7 +105,7 @@ public class TrafficDataIndexerUI extends JFrame implements ActionListener,
 			if (trafficAggregator == null) {
 				trafficAggregator = new TrafficDataAggregatorMain();
 			}
-			
+
 			trafficAggregator.runGenerateHistDataTask("Traffic_Record");
 		} else if (e.getSource() == mStopButton) {
 			if (trafficIndexer == null) {
@@ -120,9 +121,9 @@ public class TrafficDataIndexerUI extends JFrame implements ActionListener,
 		if (trafficAggregator == null) {
 			trafficAggregator = new TrafficDataAggregatorMain();
 		}
-		
+
 		trafficAggregator.runPushDataTask(filename, timestamp);
-		
+
 	}
 
 	@Override
@@ -130,14 +131,15 @@ public class TrafficDataIndexerUI extends JFrame implements ActionListener,
 		this.filename = filename;
 		this.timestamp = timestamp;
 	}
-	
+
 	/**
 	 * Runs the GUI
+	 * 
 	 * @param args
 	 */
 	public static void main(String args[]) {
 		TrafficDataIndexerUI idxrUI = new TrafficDataIndexerUI();
-		
+
 		idxrUI.setTitle("Traffic Data Indexer v1.3");
 		idxrUI.setSize(400, 150);
 		idxrUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
