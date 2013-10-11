@@ -25,7 +25,7 @@ There are three ways you can do this. You can either...
   <ul>+ Current Traffic Data File (Indexer-generated, once every 15 mins): http://54.251.186.10:8090/mmda_traffic.txt</ul>
   <ul>+ Historical Data File (Aggregator-generated, once every day): http://54.251.186.10:8090/TrafficData.hist</ul>
 </ul>
-<ul>...Deploy your own! Simply clone the repository, build it using Eclipse, and then generate a runnable JAR.</ul>
+<ul>...Deploy your own! Simply clone the repository, build it using your choice of Java environment, and then generate a runnable JAR.</ul>
 </p>
 <h5>Can I use this code? Can I modify it? Are there any licensing issues I should know about?</h5>
 <p>
